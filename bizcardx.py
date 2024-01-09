@@ -225,6 +225,7 @@ with tab2:
                     cur.execute(f'''DELETE from cards where CompanyName="{delete}"''')
                     mydb.commit()
                     st.success(f'The {delete} card details has been deleted from database successfully')
+                    st.snow()
             
     except:
         print("No Business card available in MySQL - Database")
