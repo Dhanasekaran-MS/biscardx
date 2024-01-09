@@ -178,13 +178,13 @@ with tab2:
                 st.write(view)
         else:
             st.warning('No cards Available, Add a card to view table')
-
-        selected = st.selectbox('', company, index=None, placeholder='SELECT A COMPANY TO MODIFY',
-                                label_visibility='collapsed')
+        
         column1, column2 = st.columns(2)
         # Modify the data in the selected company
-        with column1:
-            if selected is not None:
+        with column1:  
+            selected = st.selectbox('', company, index=None, placeholder='SELECT A COMPANY TO MODIFY',
+                                    label_visibility='collapsed')       
+            if selected is not None:                         
                 st.markdown("### :green[Modify Data In DataBase]")
                 det = pd.read_sql_query(f"select * from cards where CompanyName='{selected}'", mydb)
                 modify = det.values.tolist()
@@ -207,25 +207,24 @@ with tab2:
                     mydb.commit()
                     st.success("Changes Committed in DataBase")
                     st.balloons()
-        # Deleting the card
-        if selected is not None:
-            with column2:
-                st.markdown("### :violet[DELETE A CARD IN DATABASE]")
-                del_list = []
-                for i, j in cn.itertuples():
-                    del_list.append(j)
-                delete = st.selectbox('To Delete', del_list, index=None, placeholder='Select a CompanyName')
-                if delete is not None:
-                    st.write(f"Do you want to Delete the :red[{delete}] card data")
-                    st.write(':orange[click on the delete to drop the values in database]')
-                    if st.button('Delete'):
-                        cur.execute(f'''DELETE from cards where CompanyName="{delete}"''')
-                        mydb.commit()
-                        st.success(f'The {delete} card details has been deleted from database successfully')
-            # View the modified card       
-            if st.button("View Modified Card"):
-                updated = pd.read_sql_query(f'select * from cards where CompanyName="{selected}"', mydb)
-                st.write(updated)
+                # View the modified card       
+                if st.button("View Modified Card"):
+                    updated = pd.read_sql_query(f'select * from cards where CompanyName="{selected}"', mydb)
+                    st.write(updated)
 
+        # Deleting the card
+        with column2:
+            del_list = []
+            for i, j in cn.itertuples():
+                del_list.append(j)
+            delete = st.selectbox('', del_list, index=None, placeholder='Select a CompanyName to delete', label_visibility='collapsed')
+            if delete is not None:
+                st.write(f"Do you want to Delete the :red[{delete}] card data")
+                st.write(':orange[click on the delete to drop the values in database]')
+                if st.button('Delete'):
+                    cur.execute(f'''DELETE from cards where CompanyName="{delete}"''')
+                    mydb.commit()
+                    st.success(f'The {delete} card details has been deleted from database successfully')
+            
     except:
         print("No Business card available in MySQL - Database")
