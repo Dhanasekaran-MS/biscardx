@@ -26,7 +26,16 @@ cur.execute('''create table if not exists cards(
                                              Pincode bigint,
                                              Image longblob                                            
 )''')
-
+# SIDEBAR ELEMENTS
+with st.sidebar:
+    st.markdown("### :green[BizCardX]: Extracting Business Card Data with OCR")
+    st.title('Technologies')
+    st.caption('  - :violet[**Image Processing**]')
+    st.caption('  - :violet[**OCR**]')
+    st.caption('  - :violet[**Python** Scripting]')
+    st.caption('  - :violet[Data **Collection and Management**]')
+    st.caption('  - :violet[**MySQL**]')
+    st.caption('  - :violet[streamlit **GUI**]')
 # Creating two tabs in streamlit interface
 tab1, tab2 = st.tabs(['Extract and Upload', 'View and Modify'])
 # On Extract and Upload tab
