@@ -29,13 +29,14 @@ cur.execute('''create table if not exists cards(
 # SIDEBAR ELEMENTS
 with st.sidebar:
     st.markdown("### :green[BizCardX]: Extracting Business Card Data with OCR")
-    st.title('Technologies')
+    st.title(':red[Technologies]')
     st.caption('  - :violet[**Image Processing**]')
     st.caption('  - :violet[**OCR**]')
     st.caption('  - :violet[**Python** Scripting]')
     st.caption('  - :violet[Data **Collection and Management**]')
     st.caption('  - :violet[**MySQL**]')
     st.caption('  - :violet[streamlit **GUI**]')
+
 # Creating two tabs in streamlit interface
 tab1, tab2 = st.tabs(['Extract and Upload', 'View and Modify'])
 # On Extract and Upload tab
@@ -207,22 +208,21 @@ with tab2:
                     st.success("Changes Committed in DataBase")
                     st.balloons()
         # Deleting the card
-        with column2:
-            st.markdown("### :violet[DELETE A CARD IN DATABASE]")
-            del_list = []
-            for i, j in cn.itertuples():
-                del_list.append(j)
-            delete = st.selectbox('', del_list, index=None, placeholder='Select a Company to "Delete"',
-                                  label_visibility='collapsed')
-            if delete is not None:
-                st.write(f"Do you want to Delete the :red[{delete}] card data")
-                st.write(':orange[click on the delete to drop the values in database]')
-                if st.button('Delete'):
-                    cur.execute(f'''DELETE from cards where CompanyName="{delete}"''')
-                    mydb.commit()
-                    st.success(f'The {delete} card details has been deleted from database successfully')
-        # View the modified card
         if selected is not None:
+            with column2:
+                st.markdown("### :violet[DELETE A CARD IN DATABASE]")
+                del_list = []
+                for i, j in cn.itertuples():
+                    del_list.append(j)
+                delete = st.selectbox('To Delete', del_list, index=None, placeholder='Select a CompanyName')
+                if delete is not None:
+                    st.write(f"Do you want to Delete the :red[{delete}] card data")
+                    st.write(':orange[click on the delete to drop the values in database]')
+                    if st.button('Delete'):
+                        cur.execute(f'''DELETE from cards where CompanyName="{delete}"''')
+                        mydb.commit()
+                        st.success(f'The {delete} card details has been deleted from database successfully')
+            # View the modified card       
             if st.button("View Modified Card"):
                 updated = pd.read_sql_query(f'select * from cards where CompanyName="{selected}"', mydb)
                 st.write(updated)
