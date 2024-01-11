@@ -184,7 +184,7 @@ with tab2:
         with column1:  
             selected = st.selectbox('', company, index=None, placeholder='SELECT A COMPANY TO MODIFY',
                                     label_visibility='collapsed')       
-            if selected is not None:                         
+            if selected is not None:
                 st.markdown("### :green[Modify Data In DataBase]")
                 det = pd.read_sql_query(f"select * from cards where CompanyName='{selected}'", mydb)
                 modify = det.values.tolist()
@@ -207,10 +207,10 @@ with tab2:
                     mydb.commit()
                     st.success("Changes Committed in DataBase")
                     st.balloons()
-                # View the modified card       
-                if st.button("View Modified Card"):
-                    updated = pd.read_sql_query(f'select * from cards where CompanyName="{selected}"', mydb)
-                    st.write(updated)
+       
+        if st.button("View Modified Card"):
+            updated = pd.read_sql_query(f'select * from cards where CompanyName="{selected}"', mydb)
+            st.write(updated)
 
         # Deleting the card
         with column2:
@@ -224,7 +224,7 @@ with tab2:
                 if st.button('Delete'):
                     cur.execute(f'''DELETE from cards where CompanyName="{delete}"''')
                     mydb.commit()
-                    st.success(f'The {delete} card details has been deleted from database successfully')
+                    st.success(f'The "{delete}" card details has been deleted from database successfully')
                     st.snow()
             
     except:
