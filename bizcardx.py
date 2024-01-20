@@ -136,7 +136,7 @@ with tab1:
         # Get Company Name
         if set1:
             card['company'].append(' '.join(set1))
-        with open("cards/1.png", 'rb') as file:
+        with open(f"cards/{upload.name}", 'rb') as file:
             card['image'].append(file.read())
 
         for c in card:
